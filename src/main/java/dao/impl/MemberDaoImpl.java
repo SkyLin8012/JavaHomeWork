@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.MemberDao;
 import model.entity.Member;
 import util.DbConnection;
 
@@ -14,7 +15,16 @@ public class MemberDaoImpl implements MemberDao{
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		//MemberDaoImpl ml = new MemberDaoImpl();
+		//Member me= ml.getByUidAndPasword("abc", "123");
+		//Member me= ml.getByUid("abc");		
+		//List<Member> mes= ml.getMemberAll();
+		//for(Member o:mes)
+		//System.out.println(o.getName());
+		//Member me1 = new Member("bcd","123","狗狗123","0955","dog@com",30,"台北市00");
+		//ml.insert(me1);
+		//ml.updateMember(me1);
+		//ml.deletMember("bcd");
 	}
 	Connection conn =DbConnection.getDb();
 
@@ -112,12 +122,13 @@ public class MemberDaoImpl implements MemberDao{
 				member.setEmail(rs.getString("Email"));
 				member.setYear(rs.getInt("year"));
 				member.setAddress(rs.getString("address"));
+				members.add(member);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return members;
 	}
 
 	@Override
