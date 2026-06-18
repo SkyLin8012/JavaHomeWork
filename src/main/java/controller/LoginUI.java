@@ -6,6 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import model.entity.Member;
+import servise.MemeberService;
+import servise.impl.MemberServiceImpl;
 import util.DbConnection;
 
 import java.awt.Color;
@@ -91,6 +94,9 @@ public class LoginUI extends JFrame {
 		
 
 		//------event-------
+		MemeberService ms = new MemberServiceImpl();	
+		
+		
 		JButton btnNewButton = new JButton("登入");
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -98,26 +104,15 @@ public class LoginUI extends JFrame {
 				String Uid =uid.getText().trim();
 				String Password = password.getText().trim();
 				
-				String sql = "select * from member where uid=? and password=?";
-				
-				Connection conn = DbConnection.getDb();
-				try {
-					PreparedStatement ps = conn.prepareStatement(sql);
-					ps.setString(1, Uid);
-					ps.setString(2, Password);
-					ResultSet rs= ps.executeQuery();
-					if(rs.next()) {
-						System.out.println("登入成功!");
-					}else
-					{
-						System.out.println("查無此帳號或密碼!");
-					}
-					
-					
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					System.out.println("連線失敗!");
-					e1.printStackTrace();
+				Member result=ms.Login(Uid,Password);
+				if(result!=null) {
+					GameStoreUI frame = new GameStoreUI();
+					frame.setVisible(true);
+					dispose();
+				}else {
+					RegisterUI frame = new RegisterUI();
+					frame.setVisible(true);
+					dispose();
 				}
 				
 				

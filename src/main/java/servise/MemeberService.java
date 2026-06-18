@@ -19,4 +19,9 @@ public interface MemeberService {
 		void update(Member member);
 	//delete
 		void deleteByUid(String uid);
+	//cookie
+		//寫入文件
+		void setMemberToCookie(Member meber);
+		//讀取文件
+		Member getMemberToCookie();
 }
