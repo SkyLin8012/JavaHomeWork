@@ -59,7 +59,7 @@ public class Member implements Serializable
 			return email;
 		}
 		public void setEmail(String email) {
-			email = email;
+			this.email = email;
 		}
 		public int getYear() {
 			return year;

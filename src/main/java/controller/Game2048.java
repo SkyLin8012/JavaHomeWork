@@ -1,5 +1,7 @@
 package controller;
 
+import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;//動作監聽器介面，用於接收並處理ActionEvent
 import java.sql.Time;//計時工具
 import java.util.Random; //亂數產生器
@@ -53,6 +55,12 @@ class GamePanel extends JPanel implements ActionListener{
 	
 	private final Image titleBg = new ImageIcon("title_bg.png").getImage();
 	//啟動時，載入封面背景圖
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }

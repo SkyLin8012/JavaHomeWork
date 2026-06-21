@@ -10,9 +10,12 @@ import model.entity.Member;
 import servise.MemeberService;
 import servise.impl.MemberServiceImpl;
 import util.DbConnection;
+import util.Tool;
 
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -105,11 +108,20 @@ public class LoginUI extends JFrame {
 				String Password = password.getText().trim();
 				
 				Member result=ms.Login(Uid,Password);
-				if(result!=null) {
-					GameStoreUI frame = new GameStoreUI();
-					frame.setVisible(true);
-					dispose();
-				}else {
+				if(ms.checkUsername(Uid))
+				{
+					if(result!=null) {
+						Tool.saveFile("member.txt",result);
+						GameStoreUI frame = new GameStoreUI();
+						frame.setVisible(true);
+						dispose();
+					}else {
+						JOptionPane.showMessageDialog(null,"密碼錯誤","登入錯誤!",JOptionPane.ERROR_MESSAGE);
+
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(null,"沒有此帳號請先註冊","登入錯誤!",JOptionPane.ERROR_MESSAGE);
 					RegisterUI frame = new RegisterUI();
 					frame.setVisible(true);
 					dispose();
