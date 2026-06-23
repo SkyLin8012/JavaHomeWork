@@ -75,16 +75,6 @@ public class MemberServiceImpl implements MemeberService{
 		
 	}
 
-	@Override
-	public void setMemberToCookie(Member meber) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public Member getMemberToCookie() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

@@ -12,8 +12,9 @@ public class Member implements Serializable
 		private String email;
 		private int year;
 		private String address;
+		private String admin;
 		public Member() {}
-		public Member(String uid, String password, String name, String phone, String email, int year, String address) {
+		public Member(String uid, String password, String name, String phone, String email, int year, String address,String admin) {
 			super();			
 			this.uid=uid;
 			this.password = password;
@@ -22,6 +23,7 @@ public class Member implements Serializable
 			this.email = email;
 			this.year = year;
 			this.address = address;
+			this.admin = admin;
 		}
 		
 		public int getId() {
@@ -72,6 +74,12 @@ public class Member implements Serializable
 		}
 		public void setAddress(String address) {
 			this.address = address;
+		}
+		public String getAdmin() {
+			return admin;
+		}
+		public void setAdmin(String admin) {
+			this.admin = admin;
 		}
 }
 

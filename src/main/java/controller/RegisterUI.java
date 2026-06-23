@@ -20,6 +20,7 @@ import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JCheckBox;
 
 public class RegisterUI extends JFrame {
 
@@ -53,7 +54,7 @@ public class RegisterUI extends JFrame {
 	 */
 	public RegisterUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 457, 395);
+		setBounds(100, 100, 457, 429);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -72,7 +73,7 @@ public class RegisterUI extends JFrame {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(192, 192, 192));
-		panel_1.setBounds(0, 51, 441, 305);
+		panel_1.setBounds(0, 51, 441, 339);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -87,29 +88,29 @@ public class RegisterUI extends JFrame {
 		password.setColumns(10);
 		
 		name = new JTextField();
-		name.setBounds(118, 72, 227, 21);
+		name.setBounds(118, 97, 227, 21);
 		panel_1.add(name);
 		name.setColumns(10);
 		
 		phone = new JTextField();
-		phone.setBounds(118, 103, 227, 21);
+		phone.setBounds(118, 128, 227, 21);
 		panel_1.add(phone);
 		phone.setColumns(10);
 		
 		email = new JTextField();
-		email.setBounds(118, 134, 227, 21);
+		email.setBounds(118, 159, 227, 21);
 		panel_1.add(email);
 		email.setColumns(10);
 		
 		year = new JTextField();
-		year.setBounds(118, 165, 227, 21);
+		year.setBounds(118, 190, 227, 21);
 		panel_1.add(year);
 		year.setColumns(10);
 		
 
 		
 		JTextArea address = new JTextArea();
-		address.setBounds(118, 196, 227, 66);
+		address.setBounds(118, 221, 227, 75);
 		panel_1.add(address);
 		
 
@@ -126,28 +127,37 @@ public class RegisterUI extends JFrame {
 		
 		JLabel lblNewLabel_2 = new JLabel("姓名");
 		lblNewLabel_2.setFont(new Font("微軟正黑體", Font.BOLD, 14));
-		lblNewLabel_2.setBounds(41, 75, 46, 15);
+		lblNewLabel_2.setBounds(41, 100, 46, 15);
 		panel_1.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("電話");
 		lblNewLabel_3.setFont(new Font("微軟正黑體", Font.BOLD, 14));
-		lblNewLabel_3.setBounds(41, 106, 46, 15);
+		lblNewLabel_3.setBounds(41, 131, 46, 15);
 		panel_1.add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("電子郵件");
 		lblNewLabel_4.setFont(new Font("微軟正黑體", Font.BOLD, 14));
-		lblNewLabel_4.setBounds(41, 137, 67, 18);
+		lblNewLabel_4.setBounds(41, 162, 67, 18);
 		panel_1.add(lblNewLabel_4);
 		
 		JLabel lblNewLabel_5 = new JLabel("年齡");
 		lblNewLabel_5.setFont(new Font("微軟正黑體", Font.BOLD, 14));
-		lblNewLabel_5.setBounds(41, 168, 67, 18);
+		lblNewLabel_5.setBounds(41, 193, 67, 18);
 		panel_1.add(lblNewLabel_5);
 		
 		JLabel lblNewLabel_6 = new JLabel("地址");
 		lblNewLabel_6.setFont(new Font("微軟正黑體", Font.BOLD, 14));
-		lblNewLabel_6.setBounds(41, 196, 46, 21);
+		lblNewLabel_6.setBounds(41, 221, 46, 21);
 		panel_1.add(lblNewLabel_6);
+		
+		JCheckBox admin = new JCheckBox("是");
+		admin.setBounds(118, 68, 97, 23);
+		panel_1.add(admin);
+		
+		JLabel lblNewLabel_1_1 = new JLabel("管理員帳號");
+		lblNewLabel_1_1.setFont(new Font("微軟正黑體", Font.BOLD, 14));
+		lblNewLabel_1_1.setBounds(41, 72, 71, 18);
+		panel_1.add(lblNewLabel_1_1);
 		
 		//===========event==============
 		MemeberService ms = new MemberServiceImpl();
@@ -164,7 +174,7 @@ public class RegisterUI extends JFrame {
 				address.setText("");
 			}
 		});
-		clean.setBounds(258, 272, 87, 23);
+		clean.setBounds(258, 306, 87, 23);
 		panel_1.add(clean);
 		
 		JButton register = new JButton("註冊");
@@ -209,7 +219,11 @@ public class RegisterUI extends JFrame {
 					    }
 						member.setYear(Integer.parseInt(year.getText()));
 						member.setAddress(address.getText());
-						System.out.println(member.getEmail());
+						String Admin="";
+						if(admin.isSelected()) {Admin="Y";}
+						else {Admin="N";}
+						member.setAdmin(Admin);
+						//System.out.println(member.getEmail());
 						
 						ms.createMember(member);
 						JOptionPane.showMessageDialog(null,"註冊成功請重新登入!!","註冊成功!",JOptionPane.INFORMATION_MESSAGE);
@@ -222,8 +236,12 @@ public class RegisterUI extends JFrame {
 				
 			}
 		});
-		register.setBounds(118, 272, 87, 23);
+		register.setBounds(118, 306, 87, 23);
 		panel_1.add(register);
+		
+
+		
+
 		
 
 	}

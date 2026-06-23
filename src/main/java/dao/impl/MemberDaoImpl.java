@@ -21,18 +21,18 @@ public class MemberDaoImpl implements MemberDao{
 		//List<Member> mes= ml.getMemberAll();
 		//for(Member o:mes)
 		//System.out.println(o.getName());
-		Member me1 = new Member("bcd","123","狗狗123","0955","dog@com",30,"台北市00");
-		ml.insert(me1);
+		//Member me1 = new Member("G01","1232","天天02","0955","dog@com",30,"台北市00","N");
+		//ml.insert(me1);
 		//ml.updateMember(me1);
-		//ml.deletMember("bcd");
+		//ml.deletMember("G01");
 	}
 	Connection conn =DbConnection.getDb();
 
 	@Override
 	public void insert(Member member) {
 		String sql="insert into member("
-	            + " uid,password,name,phone,Email,year,address)"
-				+ " values(?,?,?,?,?,?,?)";
+	            + " uid,password,name,phone,Email,year,address,admin)"
+				+ " values(?,?,?,?,?,?,?,?)";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, member.getUid());
@@ -42,6 +42,7 @@ public class MemberDaoImpl implements MemberDao{
 			ps.setString(5, member.getEmail());
 			ps.setInt(6, member.getYear());
 			ps.setString(7, member.getAddress());
+			ps.setString(8, member.getAdmin());
 			ps.executeUpdate();			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -69,6 +70,7 @@ public class MemberDaoImpl implements MemberDao{
 				member.setEmail(rs.getString("Email"));
 				member.setYear(rs.getInt("year"));
 				member.setAddress(rs.getString("address"));
+				member.setAdmin(rs.getString("admin"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -96,6 +98,7 @@ public class MemberDaoImpl implements MemberDao{
 				member.setEmail(rs.getString("Email"));
 				member.setYear(rs.getInt("year"));
 				member.setAddress(rs.getString("address"));
+				member.setAdmin(rs.getString("admin"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -122,6 +125,7 @@ public class MemberDaoImpl implements MemberDao{
 				member.setEmail(rs.getString("Email"));
 				member.setYear(rs.getInt("year"));
 				member.setAddress(rs.getString("address"));
+				member.setAdmin(rs.getString("admin"));
 				members.add(member);
 			}
 		} catch (SQLException e) {
@@ -134,7 +138,7 @@ public class MemberDaoImpl implements MemberDao{
 	@Override
 	public void updateMember(Member member) {
 		//資料庫要關閉安全模式 SET SQL_SAFE_UPDATES = 0;
-		String sql="update member set password=?,name=?,phone=?,Email=?,year=?,address=? where uid=?";
+		String sql="update member set password=?,name=?,phone=?,Email=?,year=?,address=?,admin=? where uid=?";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			
@@ -144,7 +148,8 @@ public class MemberDaoImpl implements MemberDao{
 			ps.setString(4, member.getEmail());
 			ps.setInt(5, member.getYear());
 			ps.setString(6, member.getAddress());
-			ps.setString(7, member.getUid());
+			ps.setString(7, member.getAdmin());
+			ps.setString(8, member.getUid());			
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
