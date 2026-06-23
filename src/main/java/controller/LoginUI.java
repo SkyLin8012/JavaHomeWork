@@ -98,7 +98,9 @@ public class LoginUI extends JFrame {
 
 		//------event-------
 		MemeberService ms = new MemberServiceImpl();	
-		
+		//初始化cookie
+		Member temp =new Member();
+		Tool.saveFile("member.txt",temp);
 		
 		JButton btnNewButton = new JButton("登入");
 		btnNewButton.addMouseListener(new MouseAdapter() {

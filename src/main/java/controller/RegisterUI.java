@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import model.entity.Member;
 import servise.MemeberService;
 import servise.impl.MemberServiceImpl;
+import util.Tool;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -32,6 +33,7 @@ public class RegisterUI extends JFrame {
 	private JTextField phone;
 	private JTextField email;
 	private JTextField year;
+	private boolean checkadmin = false;
 
 	/**
 	 * Launch the application.
@@ -53,6 +55,10 @@ public class RegisterUI extends JFrame {
 	 * Create the frame.
 	 */
 	public RegisterUI() {
+		//載入cookie
+		Member me=null;
+		me=(Member) Tool.readFile("member.txt");
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 457, 429);
 		contentPane = new JPanel();
@@ -176,6 +182,18 @@ public class RegisterUI extends JFrame {
 		});
 		clean.setBounds(258, 306, 87, 23);
 		panel_1.add(clean);
+		//判斷是否為管理員
+		if("Y".equals(me.getAdmin()))
+		{
+			lblNewLabel_7.setText("新增會員");
+			checkadmin=true;
+			admin.setVisible(true);
+			lblNewLabel_1_1.setVisible(true);
+		}else {
+			admin.setVisible(false);
+			lblNewLabel_1_1.setVisible(false);
+		}
+		
 		
 		JButton register = new JButton("註冊");
 		register.addMouseListener(new MouseAdapter() {
@@ -224,11 +242,16 @@ public class RegisterUI extends JFrame {
 						else {Admin="N";}
 						member.setAdmin(Admin);
 						//System.out.println(member.getEmail());
-						
 						ms.createMember(member);
+						if(checkadmin==false)
+						{
 						JOptionPane.showMessageDialog(null,"註冊成功請重新登入!!","註冊成功!",JOptionPane.INFORMATION_MESSAGE);
 						LoginUI from = new LoginUI();
 						from.setVisible(true);
+						}else
+						{
+							JOptionPane.showMessageDialog(null,"會員新增成功!!","註冊成功!",JOptionPane.INFORMATION_MESSAGE);	
+						}
 						dispose();
 						
 					}
