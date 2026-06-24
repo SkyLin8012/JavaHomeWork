@@ -1,6 +1,7 @@
 package controller;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -17,9 +18,25 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableCellRenderer;
 
 import model.entity.Member;
 import util.Tool;
+
+//1.負責把按鈕【畫】出來
+class ButtonRenderer extends JButton implements TableCellRenderer{
+	public ButtonRenderer(String label) {
+		setText(label);
+	}
+	@Override
+	public Component getTableCellRendererComponent(JTable table,Object value,
+			boolean isSelected,boolean hasFocus,int row,int column) {
+		    return this;
+	}
+}
+//2.負責處理按鈕點擊事件的編輯器
+
+
 
 public class MemberUI extends JFrame {
 
