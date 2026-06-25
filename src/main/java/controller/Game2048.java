@@ -2,7 +2,12 @@ package controller;
 
 import java.awt.Color;//顏色類別，設定方塊及背景的RBG顏色
 import java.awt.Dimension;//尺寸類別，封裝畫布的寬度與高度像素
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;//影像基礎類別，儲存讀入的圖片資料
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;//事件類別，用以加收定時器刷新的訊號
 import java.awt.event.ActionListener;//動作監聽器介面，用於接收並處理ActionEvent
 import java.awt.event.KeyAdapter; //鍵盤適配器，用以實作鍵盤介面，挑選需要複寫即可
@@ -157,6 +162,103 @@ class GamePanel extends JPanel implements ActionListener{
 			playSound("merge.wav");
 		}
 		return moved;//告訴外層本輪滑動是否產生變化
+	}
+	
+	private void rotate() { //矩陣順時針旋轉90度演算法
+		int[][] temp= new int[GRID_SIZE][GRID_SIZE];
+		//建立一個臨時的4*4 二微陣列存放旋轉後的數據
+		for(int r=0;r<GRID_SIZE;r++)
+		{ //掃描原盤面的行
+			for(int c=0;c<GRID_SIZE;c++)
+			{//掃描原盤面的列
+				temp[c][GRID_SIZE-1-r]=board[r][c];
+				//依據數學矩陣旋轉公式進行座標映射轉換
+			}
+		}
+		for(int r=0;r<GRID_SIZE;r++)
+		{//旋轉完成後，將臨時陣列的數據複製回遊戲盤面
+			System.arraycopy(temp[r], 0, board[r],0, GRID_SIZE);
+			//逐行高效複製記憶體陣列
+		}
+	}
+	//用以判定遊戲是否結束
+	private void checkGameOver(){
+		if(gameWon) { //若達成勝利條件
+			state = GameState.GAME_OVER; //將狀態轉為結束
+			stopBGM();//關閉背景音樂
+			return; //結束整個方法
+		}
+		for(int r=0;r<GRID_SIZE;r++){ //遍歷行
+			for(int c=0;c<GRID_SIZE;c++){//遍歷列 
+				if(board[r][c]==0)return; 
+				//(1.若盤面上還有任一空位(0)代表還沒輸，直接結束判定
+				if(r < GRID_SIZE -1 && board[r][c] == board[r+1][c])return;
+				//(2.若垂直相鄰的格子數字相同，尚能合併，結束判定
+				if(c < GRID_SIZE -1 && board[r][c] == board[r][c+1])return;
+				//(3.若水平相鄰格子有數字相同，尚能合併，結束判定				
+			}			
+		}
+		stopBGM();//關閉背景音樂
+	}
+	
+	@Override 
+	protected void paintComponent(Graphics g){//Java Swing 繪圖主入口 
+		super.paintComponent(g);//呼叫父類別，自動清空畫布背景
+		Graphics2D g2d = (Graphics2D)g;
+		//將基礎畫筆強轉為2D進階畫筆
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+		//開啟文字消除鋸齒
+		
+		switch(state) {//狀態機的畫布分流
+		  case START:drawStartScreen(g2d);break;
+		  //若目前是START狀態，就去執行畫封面的方法
+		  case RUNNING: drawBoard(g2d); break;
+		  //若目前是RUNNING狀態，就去繪製4*4主要盤面
+		  case GAME_OVER: drawGameOverScreen(g2d);break;
+		  //若目前是 GAME_OVER狀態，繪製最後計分板
+		  default:break;
+		}
+	}
+	//繪製遊戲封面
+	private void drawStartScreen(Graphics2D g2d) {
+		g2d.drawImage(titleBg, 0, 0, SCREEN_SIZE, SCREEN_SIZE, this);
+		//在最底層鋪上寬高500*500的封面背景圖
+		
+		g2d.setColor(new Color(0x776E65));//設定文字顏色為深灰褐色
+		g2d.setFont(new Font("Microsoft JhengHei",Font.BOLD,55));
+		//設定大標題字體
+		FontMetrics metrics1 = g2d.getFontMetrics();//獲取測量工具
+		g2d.drawString("2048 遊戲",( SCREEN_SIZE-metrics1.stringWidth("2048 遊戲"))/2,SCREEN_SIZE/3);
+		// 劃出置中的大標題
+		
+		g2d.setColor(Color.DARK_GRAY); //將畫筆切換為深灰色
+		g2d.setFont(new Font("Microsoft JhengHei",Font.PLAIN,20));
+		//設定提示副標題字型
+		FontMetrics metrics2 = g2d.getFontMetrics();//獲取測量工具
+		g2d.drawString("按 [ ENTER ] 開始挑戰", ( SCREEN_SIZE-metrics1.stringWidth("按 [ ENTER ] 開始挑戰"))/2,SCREEN_SIZE/2+20);
+		//畫出開始提示
+		
+		g2d.setFont(new Font("Microsoft JhengHei",Font.PLAIN,16));
+		g2d.drawString("使用 方向鍵 或 WASD 控制移動與合併", ( SCREEN_SIZE-metrics1.stringWidth("使用 方向鍵 或 WASD 控制移動與合併"))/2+15,SCREEN_SIZE/2+80);
+		//畫出操作指南
+		//切換為更小字體
+		
+	}
+	//繪製主盤面數據
+	private void drawBoard(Graphics2D g2d) {
+		g2d.setColor(new Color(0x776E65));//設定文字顏色為深灰褐色
+		
+		
+	}
+	private void drawGameOverScreen(Graphics2D g2d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	private void stopBGM() {
+		// TODO Auto-generated method stub
+		
 	}
 	private void playSound(String string) {
 		// TODO Auto-generated method stub
