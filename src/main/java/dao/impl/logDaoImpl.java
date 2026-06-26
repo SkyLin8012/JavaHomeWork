@@ -5,24 +5,27 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import dao.logDao;
+import dao.LogDao;
 import model.entity.Log;
 import util.DbConnection;
 
-public class logDaoImpl implements logDao {
+public class LogDaoImpl implements LogDao {
 
 	public static void main(String[] args) {
-		//new logDaoImpl().insert(new Log(1,"D0006","sky","1","貪吃蛇","10",""));
+		//new LogDaoImpl().insert(new Log(1,"D0006","sky","2","經典 2048","50","2026-12-01 12:00:00"));
 		//new logDaoImpl().updateLog("100","2026-12-01 12:00:00",1);
 		//new logDaoImpl().deletLog(1);
-		/*
-		List<Log> logs = new logDaoImpl().getLogAll();
+		
+		List<Log> logs = new LogDaoImpl().getLogAll();
 		for(Log o :logs)
 		{
 			System.out.println(o.getId()+" "+o.getGameName()+o.getMemberName()+" "+o.getTopScore());
 		} 
+		/*
 		List<Log> logs = new logDaoImpl().getByMemberName("貓") ;
 		for(Log o :logs)
 		{
@@ -79,8 +82,9 @@ public class logDaoImpl implements logDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}		
 		return logs;
+		
 	}
 
 	@Override
@@ -184,3 +188,5 @@ public class logDaoImpl implements logDao {
 	}
 
 }
+
+

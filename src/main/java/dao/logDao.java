@@ -4,7 +4,7 @@ import java.util.List;
 
 import model.entity.Log;
 
-public interface logDao {
+public interface LogDao {
 	//create
 	void insert(Log log);
 	//read	

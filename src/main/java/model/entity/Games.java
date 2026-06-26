@@ -7,8 +7,9 @@ public class Games {
 	private String introduce;
 	private String times; 
 	private String install;
+	private String url;
 	public Games() {};
-	public Games(int id, String name, String picture, String introduce, String times, String install) {
+	public Games(int id, String name, String picture, String introduce, String times, String install,String url) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -16,6 +17,7 @@ public class Games {
 		this.introduce = introduce;
 		this.times = times;
 		this.install = install;
+		this.url=url;
 	}
 	public int getId() {
 		return id;
@@ -52,6 +54,12 @@ public class Games {
 	}
 	public void setInstall(String install) {
 		this.install = install;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	
 	
