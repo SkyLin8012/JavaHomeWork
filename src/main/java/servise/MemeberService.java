@@ -2,6 +2,8 @@ package servise;
 
 import java.util.List;
 
+import javax.swing.table.DefaultTableModel;
+
 import model.entity.Member;
 
 public interface MemeberService {
@@ -15,6 +17,11 @@ public interface MemeberService {
 		boolean checkUsername(String uid);
 		//搜尋全部
 		List<Member> findAllMembers();
+		//取得特定人員資料
+		Member memberByUid(String uid);
+		//table
+		DefaultTableModel findAllMemberTable();
+		
 	//update
 		void update(Member member);
 	//delete

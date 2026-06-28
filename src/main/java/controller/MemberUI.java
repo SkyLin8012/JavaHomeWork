@@ -8,20 +8,28 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
+import model.entity.Games;
 import model.entity.Member;
+import servise.impl.MemberServiceImpl;
+import servise.MemeberService;
+import util.TableButtonSupport;
 import util.Tool;
+import javax.swing.JScrollPane;
 
 //1.負責把按鈕【畫】出來
 class ButtonRenderer extends JButton implements TableCellRenderer{
@@ -66,8 +74,11 @@ public class MemberUI extends JFrame {
 	public MemberUI() {
 		Member me=null;
 		me=(Member) Tool.readFile("member.txt");
+		//載入方法
+		MemeberService ms = (MemeberService) new MemberServiceImpl();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 420);
+		setBounds(100, 100, 587, 420);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -75,7 +86,7 @@ public class MemberUI extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(192, 192, 192));
-		panel.setBounds(10, 10, 414, 37);
+		panel.setBounds(10, 10, 551, 37);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -86,30 +97,104 @@ public class MemberUI extends JFrame {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(192, 192, 192));
-		panel_1.setBounds(10, 57, 414, 44);
+		panel_1.setBounds(10, 57, 551, 44);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(new Color(192, 192, 192));
-		panel_2.setBounds(10, 111, 414, 260);
+		panel_2.setBounds(10, 111, 551, 260);
 		contentPane.add(panel_2);
 		panel_2.setLayout(null);
 		
-		table = new JTable();
-		table.setBounds(10, 43, 394, 207);
-		panel_2.add(table);
+
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 43, 531, 207);
+		panel_2.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		//====event=====
+		//載入table資料		
+		table.setModel(ms.findAllMemberTable());
+		//重新整理
 		JButton btnNewButton_2 = new JButton("重新整理");
+		btnNewButton_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				table.setModel(ms.findAllMemberTable());
+				//=== 將欄位變成按鈕===	
+				//修改
+				table.getColumnModel().getColumn(8).setCellRenderer(
+					  new TableButtonSupport(table,"修改",row->{
+						 Object id = table.getValueAt(row, 0);
+						 System.out.println("修改 ID"+id);
+						 MemberUpdateUI frame = new MemberUpdateUI((String)id);
+						// 關鍵：設定關閉這個視窗時，只釋放該視窗資源，而不結束整個程式
+						frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+						frame.setVisible(true);
+					  })			
+				);
+				//刪除
+				table.getColumnModel().getColumn(9).setCellRenderer(
+						  new TableButtonSupport(table,"刪除",row->{
+							 Object id = table.getValueAt(row, 0);
+							//System.out.println("刪除 ID"+id);
+							MemberDelete frame = new MemberDelete((String)id);
+							// 關鍵：設定關閉這個視窗時，只釋放該視窗資源，而不結束整個程式
+							frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+							frame.setVisible(true);
+						  })			
+				);
+				//設定CellEditor，讓按鈕可點擊		
+				table.getColumnModel().getColumn(8).setCellEditor((TableCellEditor) table.getColumnModel().getColumn(8).getCellRenderer());
+				table.getColumnModel().getColumn(9).setCellEditor((TableCellEditor) table.getColumnModel().getColumn(9).getCellRenderer());
+				table.getColumnModel().getColumn(0).setMaxWidth(50);
+				table.getColumnModel().getColumn(5).setMaxWidth(50);
+			}
+		});
 		btnNewButton_2.setBounds(10, 10, 87, 23);
 		panel_2.add(btnNewButton_2);
 		
-		//====event=====
+		
+	
+		//=== 將欄位變成按鈕===	
+		//修改
+		table.getColumnModel().getColumn(8).setCellRenderer(
+			  new TableButtonSupport(table,"修改",row->{
+				 Object id = table.getValueAt(row, 0);
+				 System.out.println("修改 ID"+id);
+				 MemberUpdateUI frame = new MemberUpdateUI((String)id);
+				// 關鍵：設定關閉這個視窗時，只釋放該視窗資源，而不結束整個程式
+				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				frame.setVisible(true);
+			  })			
+		);
+		//刪除
+		table.getColumnModel().getColumn(9).setCellRenderer(
+				  new TableButtonSupport(table,"刪除",row->{
+					 Object id = table.getValueAt(row, 0);
+					//System.out.println("刪除 ID"+id);
+					MemberDelete frame = new MemberDelete((String)id);
+					// 關鍵：設定關閉這個視窗時，只釋放該視窗資源，而不結束整個程式
+					frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					frame.setVisible(true);
+				  })			
+		);
+		//設定CellEditor，讓按鈕可點擊		
+		table.getColumnModel().getColumn(8).setCellEditor((TableCellEditor) table.getColumnModel().getColumn(8).getCellRenderer());
+		table.getColumnModel().getColumn(9).setCellEditor((TableCellEditor) table.getColumnModel().getColumn(9).getCellRenderer());
+		table.getColumnModel().getColumn(0).setMaxWidth(50);
+		table.getColumnModel().getColumn(5).setMaxWidth(50);
+		
+		
 		namemsg.setText(me.getName()+"歡迎您!!");
 		
 		JLabel timemsg = new JLabel("0000-00-00 00:00:00");
 		timemsg.setFont(new Font("微軟正黑體", Font.BOLD, 12));
-		timemsg.setBounds(279, 11, 125, 19);
+		timemsg.setBounds(416, 11, 125, 19);
 		panel.add(timemsg);
 		
 		//計時器
@@ -118,7 +203,7 @@ public class MemberUI extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("會員管理");
 		lblNewLabel.setFont(new Font("微軟正黑體", Font.BOLD, 16));
-		lblNewLabel.setBounds(181, 10, 67, 17);
+		lblNewLabel.setBounds(235, 10, 67, 17);
 		panel.add(lblNewLabel);
 		//建立Time，每1000毫秒(1秒)執行一次
 		Timer timer = new Timer(1000,new ActionListener(){
@@ -154,23 +239,17 @@ public class MemberUI extends JFrame {
 		btnNewButton_1.setBounds(105, 10, 87, 23);
 		panel_1.add(btnNewButton_1);
 		
-		JButton btnNewButton_1_1 = new JButton("修改");
-		btnNewButton_1_1.addMouseListener(new MouseAdapter() {
+		JButton btnNewButton_3 = new JButton("回遊樂場");
+		btnNewButton_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				GameStoreUI form = new GameStoreUI();
+				form.setVisible(true);
+				dispose();
 			}
 		});
-		btnNewButton_1_1.setBounds(202, 10, 87, 23);
-		panel_1.add(btnNewButton_1_1);
-		
-		JButton btnNewButton_1_1_1 = new JButton("刪除");
-		btnNewButton_1_1_1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
-		btnNewButton_1_1_1.setBounds(299, 10, 87, 23);
-		panel_1.add(btnNewButton_1_1_1);
+		btnNewButton_3.setBounds(454, 10, 87, 23);
+		panel_1.add(btnNewButton_3);
 
 	}
 

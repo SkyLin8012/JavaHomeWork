@@ -187,6 +187,7 @@ public class LogDaoImpl implements LogDao {
 		
 	}
 
+
 }
 
 

@@ -25,9 +25,11 @@ public class GamesDaoImpl implements GamesDao {
 		
 		for(Games o :games)
 		{
-			System.out.println(o.getId()+" "+o.getName()+" "+o.getPicture()+" "+o.getUrl());
-		} 
-		*/
+			System.out.println(o.getId()+" "+o.getName()+" "+o.getPicture()+" "+o.getIntroduce()+" "+o.getUrl());
+		} */
+		Games game = gd.getByid(1);
+		System.out.println(game.getPicture());
+		
 	}
 	Connection conn=DbConnection.getDb();
 
@@ -51,6 +53,33 @@ public class GamesDaoImpl implements GamesDao {
 			e.printStackTrace();
 		}
 	}
+	@Override
+	public Games getByid(int id) {
+		String sql = "select * from games where id = ?";
+		Games ge = new Games();
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next())
+			{				
+				ge.setId(rs.getInt("id"));
+				ge.setName(rs.getString("name"));
+				ge.setPicture(rs.getString("picture"));
+				ge.setIntroduce(rs.getString("introduce"));
+				ge.setInstall(rs.getString("install"));
+				ge.setTimes(rs.getString("times"));
+				ge.setUrl(rs.getString("url"));
+							
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return ge;
+		
+	}
 
 	@Override
 	public List<Games> getByname(String name) {
@@ -66,9 +95,9 @@ public class GamesDaoImpl implements GamesDao {
 				ge.setId(rs.getInt("id"));
 				ge.setName(rs.getString("name"));
 				ge.setPicture(rs.getString("picture"));
-				ge.setTimes(rs.getString("introduce"));
-				ge.setInstall(rs.getString("times"));
-				ge.setTimes(rs.getString("install"));
+				ge.setIntroduce(rs.getString("introduce"));
+				ge.setInstall(rs.getString("install"));
+				ge.setTimes(rs.getString("times"));
 				ge.setUrl(rs.getString("url"));
 				games.add(ge);				
 			}
@@ -93,9 +122,9 @@ public class GamesDaoImpl implements GamesDao {
 				ge.setId(rs.getInt("id"));
 				ge.setName(rs.getString("name"));
 				ge.setPicture(rs.getString("picture"));
-				ge.setTimes(rs.getString("introduce"));
-				ge.setInstall(rs.getString("times"));
-				ge.setTimes(rs.getString("install"));
+				ge.setIntroduce(rs.getString("introduce"));
+				ge.setInstall(rs.getString("install"));
+				ge.setTimes(rs.getString("times"));
 				ge.setUrl(rs.getString("url"));
 				games.add(ge);				
 			}
@@ -116,7 +145,7 @@ public class GamesDaoImpl implements GamesDao {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, games.getName());
 			ps.setString(2, games.getPicture());
-			ps.setString(3, games.getInstall());
+			ps.setString(3, games.getIntroduce());
 			ps.setString(4, games.getTimes());
 			ps.setString(5, games.getInstall());
 			ps.setString(6, games.getUrl());
@@ -143,5 +172,7 @@ public class GamesDaoImpl implements GamesDao {
 		}
 		
 	}
+
+
 
 }

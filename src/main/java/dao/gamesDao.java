@@ -8,6 +8,7 @@ public interface GamesDao {
 	//create
 	void insert(Games games);
 	//read	
+	Games getByid(int id);
 	List<Games> getByname(String name);
 	List<Games> getGamesAll();
 	//update

@@ -56,6 +56,10 @@ public class LoginUI extends JFrame {
 	 * Create the frame.
 	 */
 	public LoginUI() {
+		//取得cookie
+		Member me=null;
+		me=(Member) Tool.readFile("member.txt");
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -98,10 +102,13 @@ public class LoginUI extends JFrame {
 		
 
 		//------event-------
-		MemeberService ms = new MemberServiceImpl();	
-		//初始化cookie
-		Member temp =new Member();
-		Tool.saveFile("member.txt",temp);
+		if(me!=null)
+		{
+			uid.setText(me.getUid());
+			password.setText(me.getPassword());
+		}
+		
+		MemeberService ms = new MemberServiceImpl();
 		
 		JButton btnNewButton = new JButton("登入");
 		btnNewButton.addMouseListener(new MouseAdapter() {
@@ -136,8 +143,8 @@ public class LoginUI extends JFrame {
 		btnNewButton.setBounds(111, 171, 87, 23);
 		panel_1.add(btnNewButton);
 		//註冊
-		JButton btnNewButton_1 = new JButton("註冊");
-		btnNewButton_1.addMouseListener(new MouseAdapter() {
+		JButton addmember = new JButton("註冊");
+		addmember.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				String formname="controller.RegisterUI";
@@ -174,8 +181,33 @@ public class LoginUI extends JFrame {
 				//dispose();
 			}
 		});
-		btnNewButton_1.setBounds(208, 171, 87, 23);
-		panel_1.add(btnNewButton_1);
+		addmember.setBounds(113, 208, 182, 23);
+		panel_1.add(addmember);
+		//判斷是否為管理員
+		if("Y".equals(me.getAdmin()))
+		{
+			addmember.setVisible(false);
+		}else {
+			addmember.setVisible(true);
+			
+		}
+		
+		
+		JButton btnNewButton_2 = new JButton("登出");
+		btnNewButton_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//初始化cookie
+				Member temp =new Member();
+				Tool.saveFile("member.txt",temp);
+				uid.setText("");
+				password.setText("");
+				addmember.setVisible(true);
+			}
+		});
+		btnNewButton_2.setBounds(208, 171, 87, 23);
+		panel_1.add(btnNewButton_2);
+		
 
 	}
 }

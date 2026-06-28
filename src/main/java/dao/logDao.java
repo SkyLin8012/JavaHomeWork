@@ -11,6 +11,7 @@ public interface LogDao {
 	List<Log> getByGameName(String name);
 	List<Log> getByMemberName(String name);
 	List<Log> getLogAll();
+
 	//update
 	void updateLog(String TopScore,String times,int id);
 	

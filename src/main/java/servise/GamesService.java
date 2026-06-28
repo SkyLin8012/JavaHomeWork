@@ -2,6 +2,8 @@ package servise;
 
 import java.util.List;
 
+import javax.swing.table.DefaultTableModel;
+
 import model.entity.Games;
 
 public interface GamesService {
@@ -9,12 +11,16 @@ public interface GamesService {
 		//註冊,新增
 		void createGame(Games games);
 	//read
+		Games findGameByid(int id);
 		//搜尋遊戲以遊戲關鍵字
 		List<Games> findGameByName(String name);		
 		//搜尋全部
 		List<Games> findAllGames();
+		
 	//update
 		void update(Games game);
 	//delete
 		void deleteByid(int id);
+	//GamesTableUI
+		DefaultTableModel findAllGamesTable();
 }

@@ -199,7 +199,6 @@ public class RegisterUI extends JFrame {
 		register.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
 				if(uid.getText().equals(""))
 				{
 					JOptionPane.showMessageDialog(null,"會員ID不能為空","警告!",JOptionPane.WARNING_MESSAGE);	
@@ -246,7 +245,7 @@ public class RegisterUI extends JFrame {
 						if(checkadmin==false)
 						{
 						JOptionPane.showMessageDialog(null,"註冊成功請重新登入!!","註冊成功!",JOptionPane.INFORMATION_MESSAGE);
-						LoginUI from = new LoginUI();
+						LoginUI from = new LoginUI();						
 						from.setVisible(true);
 						}else
 						{
